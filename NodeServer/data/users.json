@@ -1,23 +1,9 @@
 [
   {
-    "email": "a@a.com",
-    "name": "Anil",
-    "password": "password1",
-    "profession": "king",
-    "id": 1
-  },
-  {
-    "email": "b@a.com",
-    "name": "rob kendal",
-    "password": "password3",
-    "profession": "code fiddler",
-    "id": 2
-  },
-  {
-    "email": "c@a.comdd",
-    "name": "teresa maydsssAS",
-    "password": "parliament",
-    "profession": "brexit killer666",
-    "id": 3
+    "name": "asda",
+    "email": "sdasdas",
+    "password": "sdasda",
+    "profession": "dasd",
+    "id": "1653474476789"
   }
 ]

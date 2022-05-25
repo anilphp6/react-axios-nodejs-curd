@@ -13,12 +13,20 @@ class App extends Component {
           <Link to={"/users"} className="navbar-brand">
             Users
           </Link>
+          <Link to={"/addUser"} className="navbar-brand">
+            Add User
+          </Link>
+          <Link to={"/login"} className="navbar-brand">
+            Login
+          </Link>
         </nav>
 
         <div className="container mt-3">
           <Switch>
             <Route exact path={["/", "/users"]} component={UsersList} />
             <Route path="/users/:id" component={User} />
+            <Route path="/login" component={() => <>Coming...</>} />
+            <Route path="/addUser" component={User} />
           </Switch>
         </div>
       </div>

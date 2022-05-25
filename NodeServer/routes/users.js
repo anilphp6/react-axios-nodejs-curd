@@ -56,10 +56,10 @@ const userRoutes = (app, fs) => {
             // Note: this isn't ideal for production use. 
             // ideally, use something like a UUID or other GUID for a unique ID value
             const newUserId = Date.now().toString();
-
+            req.body.id = newUserId
             // add the new user
-            data[newUserId.toString()] = req.body;
-
+            data.push(req.body)
+            console.log(data)
             writeFile(JSON.stringify(data, null, 2), () => {
                 res.status(200).send('new user added');
             });
@@ -96,14 +96,12 @@ const userRoutes = (app, fs) => {
 
     // DELETE
     app.delete('/users/:id', (req, res) => {
-
         readFile(data => {
-
             // delete the user
             const userId = req.params["id"];
-            delete data[userId];
-
-            writeFile(JSON.stringify(data, null, 2), () => {
+            console.log(userId);
+            const record = data.filter(item => item.id != userId)
+            writeFile(JSON.stringify(record, null, 2), () => {
                 res.status(200).send(`users id:${userId} removed`);
             });
         },

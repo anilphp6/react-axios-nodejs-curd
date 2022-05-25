@@ -1,19 +1,17 @@
 import { Component, ChangeEvent } from "react";
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps } from "react-router-dom";
 
 import UserDataService from "../services/service";
 import IUser from "../types/user.type";
 
-interface RouterProps { // type for `match.params`
-  id: string; // must be type `string` since value comes from the URL
+interface RouterProps {
+  id: string;
 }
-
 type Props = RouteComponentProps<RouterProps>;
-
 type State = {
   currentUser: IUser;
-  message: string | null
-}
+  message: string | null;
+};
 
 export default class User extends Component<Props, State> {
   constructor(props: Props) {
@@ -22,28 +20,29 @@ export default class User extends Component<Props, State> {
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.state = {
       currentUser: {
-        name: '',
-        email: '',
-        password: '',
-        profession: '',
+        name: "",
+        email: "",
+        password: "",
+        profession: "",
       },
-      message: null
-    }
-
+      message: null,
+    };
   }
-
+  validateExitUser = () => {
+    return this.props.match.params.id ? true : false;
+  };
   componentDidMount() {
-    this.getUser(this.props.match.params.id);
+    if (this.validateExitUser()) {
+      this.getUser(this.props.match.params.id);
+    }
   }
 
   onChangeTitle(e: ChangeEvent<HTMLInputElement>) {
     const title = e.target.value;
-
   }
 
   onChangeDescription(e: ChangeEvent<HTMLInputElement>) {
     const description = e.target.value;
-
   }
 
   getUser(id: string) {
@@ -59,49 +58,76 @@ export default class User extends Component<Props, State> {
       });
   }
 
-  deleteUser() {
-    UserDataService.delete(this.props.match.params.id)
+  deleteUser = () => {
+    UserDataService.delete(this.state.currentUser.id)
       .then((response: any) => {
-        console.log(response.data);
-        this.props.history.push("/");
+        console.log("response--->", response.data);
+        this.setState({
+          message: "Deleted successfully!",
+        });
+        setTimeout(() => {
+          this.setState({
+            message: null,
+          }, () => this.props.history.push("/"));
+        }, 1000);
       })
       .catch((e: Error) => {
         console.log(e);
       });
   }
-  updateUser = () => {
-    //console.log(this.state.currentUser);
-    UserDataService.update(
-      this.state.currentUser, this.state.currentUser.id
-    ).then((response: any) => {
-      console.log('response--->', response.data);
-      this.setState({
-        message: "The User was updated successfully!",
-      });
-      setTimeout(() => {
-        this.setState({
-          message: null,
+  updatSaveUser = () => {
+    //update
+    if (this.state.currentUser.id) {
+      UserDataService.update(this.state.currentUser, this.state.currentUser.id)
+        .then((response: any) => {
+          console.log("response--->", response.data);
+          this.setState({
+            message: "The User was updated successfully!",
+          });
+          setTimeout(() => {
+            this.setState({
+              message: null,
+            });
+          }, 1000);
+        })
+        .catch((e: Error) => {
+          console.log("Error--->", e);
         });
-      }, 1000);
-    })
-      .catch((e: Error) => {
-        console.log('Error--->', e);
-      });
+    } else {
+      //Save
+      UserDataService.create(this.state.currentUser)
+        .then((response: any) => {
+          console.log("response--->", response.data);
+          this.setState({
+            message: "The User was save successfully!",
+          });
+          setTimeout(() => {
+            this.setState({
+              message: null,
+            }, () => this.props.history.push("/"));
+          }, 1000);
+        })
+        .catch((e: Error) => {
+          console.log("Error--->", e);
+        });
+    }
   }
   updateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name1 = e.currentTarget.name as keyof typeof this.state.currentUser;
-    const records = { ...this.state }
+    const records = { ...this.state };
 
-    records.currentUser[name1] = e.target.value
+    records.currentUser[name1] = e.target.value;
     console.log(records);
     this.setState({ ...records });
-  }
+  };
   render() {
     return (
       <div>
-        {
-          this.state.message && <span className="fade alert alert-success show">{this.state.message}</span>
-        }
+        {this.state.message && (
+          <span className="fade alert alert-success show">
+            {this.state.message}
+          </span>
+        )}
         <div className="edit-form">
           <h4>User details</h4>
           <form>
@@ -111,7 +137,7 @@ export default class User extends Component<Props, State> {
                 type="text"
                 className="form-control"
                 id="title"
-                name='name'
+                name="name"
                 defaultValue={this.state.currentUser.name}
                 onChange={this.updateChange}
               />
@@ -119,8 +145,8 @@ export default class User extends Component<Props, State> {
             <div className="form-group">
               <label htmlFor="title">Password</label>
               <input
-                type="text"
-                name='password'
+                type="password"
+                name="password"
                 className="form-control"
                 id="title"
                 onChange={this.updateChange}
@@ -132,7 +158,7 @@ export default class User extends Component<Props, State> {
               <input
                 type="text"
                 className="form-control"
-                name='email'
+                name="email"
                 id="email"
                 onChange={this.updateChange}
                 defaultValue={this.state.currentUser.email}
@@ -144,40 +170,30 @@ export default class User extends Component<Props, State> {
                 type="text"
                 className="form-control"
                 id="email"
-                name='profession'
+                name="profession"
                 onChange={this.updateChange}
                 defaultValue={this.state.currentUser.profession}
               />
             </div>
-            <div className="form-group">
-              <label>
-                <strong>Status:</strong>
-              </label>
-              Pending
-            </div>
           </form>
-          <button
-            className="badge badge-danger mr-2"
-          >
-            Delete
-          </button>
+          {this.validateExitUser() && (
+            <button className="badge badge-danger mr-2" onClick={this.deleteUser}>Delete</button>
+          )}
 
           <button
             type="submit"
             className="badge badge-success"
-            onClick={this.updateUser}
+            onClick={this.updatSaveUser}
           >
-            Update
+            {this.validateExitUser() ? "Update" : "Save"}
           </button>
           <button
             type="submit"
             className="badge badge-dark ml-2"
-            onClick={() => this.props.history.push('/')}
+            onClick={() => this.props.history.push("/")}
           >
             Back
           </button>
-
-          <p>{/* this.state.message */}</p>
         </div>
       </div>
     );

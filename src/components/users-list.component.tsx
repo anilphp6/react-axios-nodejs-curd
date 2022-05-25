@@ -1,30 +1,24 @@
 import { Component, ChangeEvent } from "react";
 import UserDataService from "../services/service";
 import { Link } from "react-router-dom";
-import IUser from '../types/user.type';
+import IUser from "../types/user.type";
 
 type Props = {};
 
 type State = {
-  users: Array<IUser>,
-  currentUsers: IUser | null,
-  currentIndex: number | null
+  users: Array<IUser>;
+  currentUsers: IUser | null;
+  currentIndex: number | null;
 };
 
-export default class UsersList extends Component<Props, State>{
+export default class UsersList extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.retrieveUsers = this.retrieveUsers.bind(this);
-    /*  this.refreshList = this.refreshList.bind(this);
-     this.setActiveTutorial = this.setActiveTutorial.bind(this);
-     this.removeAllTutorials = this.removeAllTutorials.bind(this);
-     this.searchTitle = this.searchTitle.bind(this); */
-
     this.state = {
       users: [],
       currentUsers: null,
-      currentIndex: null
-
+      currentIndex: null,
     };
   }
 
@@ -32,13 +26,11 @@ export default class UsersList extends Component<Props, State>{
     this.retrieveUsers();
   }
 
-
-
   retrieveUsers() {
     UserDataService.getAll()
       .then((response: any) => {
         this.setState({
-          users: response.data
+          users: response.data,
         });
         console.log(response);
       })
@@ -47,41 +39,12 @@ export default class UsersList extends Component<Props, State>{
       });
   }
 
-  setActiveTutorial(userDetails: IUser, index: number) {
+  setActiveUser(userDetails: IUser, index: number) {
     this.setState({
       currentUsers: userDetails,
-      currentIndex: index
+      currentIndex: index,
     });
   }
-
-  /* removeAllTutorials() {
-    TutorialDataService.deleteAll()
-      .then((response: any) => {
-        console.log(response.data);
-        this.refreshList();
-      })
-      .catch((e: Error) => {
-        console.log(e);
-      });
-  }
-
-  searchTitle() {
-    this.setState({
-      currentTutorial: null,
-      currentIndex: -1
-    });
-
-    TutorialDataService.findByTitle(this.state.searchTitle)
-      .then((response: any) => {
-        this.setState({
-          tutorials: response.data
-        });
-        console.log(response.data);
-      })
-      .catch((e: Error) => {
-        console.log(e);
-      });
-  } */
 
   render() {
     const { users, currentUsers } = this.state;
@@ -95,10 +58,7 @@ export default class UsersList extends Component<Props, State>{
               placeholder="Search by email"
             />
             <div className="input-group-append">
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-              >
+              <button className="btn btn-outline-secondary" type="button">
                 Search
               </button>
             </div>
@@ -111,10 +71,8 @@ export default class UsersList extends Component<Props, State>{
             {users &&
               users.map((users: IUser, index: number) => (
                 <li
-                  className={
-                    "list-group-item"
-                  }
-                  onClick={() => this.setActiveTutorial(users, index)}
+                  className={"list-group-item"}
+                  onClick={() => this.setActiveUser(users, index)}
                   key={index}
                 >
                   {`${users.name}---${users.email}`}
