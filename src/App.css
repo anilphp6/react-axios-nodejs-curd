@@ -13,3 +13,31 @@
   max-width: 300px;
   margin: auto;
 }
+
+li.row {
+  border: 2px solid #c3e6cb;
+  cursor: pointer;
+}
+
+li.row {
+  background: #CCC;
+}
+
+li.row:nth-child(odd) {
+  background: #e2e3e5;
+}
+
+.centered {
+  margin: auto;
+  /* height: 200px; */
+  /* width: 200px; */
+  position: absolute;
+  top: 120px;
+  bottom: 0;
+  left: 146px;
+  right: 0;
+}
+
+.btn-primary a {
+  color: #fff;
+}

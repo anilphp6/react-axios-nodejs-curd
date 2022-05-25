@@ -8,6 +8,7 @@ interface RouterProps {
   id: string;
 }
 type Props = RouteComponentProps<RouterProps>;
+
 type State = {
   currentUser: IUser;
   message: string | null;
@@ -68,7 +69,7 @@ export default class User extends Component<Props, State> {
         setTimeout(() => {
           this.setState({
             message: null,
-          }, () => this.props.history.push("/"));
+          }, () => this.props.history.push("/users"));
         }, 1000);
       })
       .catch((e: Error) => {
@@ -104,7 +105,7 @@ export default class User extends Component<Props, State> {
           setTimeout(() => {
             this.setState({
               message: null,
-            }, () => this.props.history.push("/"));
+            }, () => this.props.history.push("/history"));
           }, 1000);
         })
         .catch((e: Error) => {
@@ -188,9 +189,9 @@ export default class User extends Component<Props, State> {
             {this.validateExitUser() ? "Update" : "Save"}
           </button>
           <button
-            type="submit"
+            type="button"
             className="badge badge-dark ml-2"
-            onClick={() => this.props.history.push("/")}
+            onClick={() => this.props.history.push("/users")}
           >
             Back
           </button>

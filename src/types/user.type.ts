@@ -5,3 +5,8 @@ export default interface IUser {
   password: string,
   profession?: string,
 }
+
+export interface Ilogin {
+  email: string
+  password: string
+}

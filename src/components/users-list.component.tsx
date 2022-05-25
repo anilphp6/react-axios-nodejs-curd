@@ -71,20 +71,23 @@ export default class UsersList extends Component<Props, State> {
             {users &&
               users.map((users: IUser, index: number) => (
                 <li
-                  className={"list-group-item"}
+                  className={"list-group-item text-justify text-capitalize row"}
                   onClick={() => this.setActiveUser(users, index)}
                   key={index}
+                  title={users.name}
                 >
-                  {`${users.name}---${users.email}`}
+                  {`${users.name}     ${users.email}`}
                 </li>
               ))}
+            {
+              users.length === 0 && (<li className={"list-group-item text-justify text-capitalize row"}>No Records.</li>)
+            }
           </ul>
         </div>
         <div className="col-md-6">
-          <h1>Users Details</h1>
           {currentUsers && (
             <div>
-              <h4>User </h4>
+              <h4>Users Details</h4>
               <div>
                 <label>
                   <strong>Name:</strong>
