@@ -50,11 +50,6 @@ export const PageLayout = (props: any) => {
             <br />
             {props.children}
             <br />
-            <AuthenticatedTemplate>
-                <footer>
-                    How did we do?
-                </footer>
-            </AuthenticatedTemplate>
         </>
     );
 };
@@ -66,6 +61,7 @@ export const IdTokenClaims = (props: any) => {
             <p><strong>Issuer: </strong> {props.idTokenClaims.iss}</p>
             <p><strong>OID: </strong> {props.idTokenClaims.oid}</p>
             <p><strong>UPN: </strong> {props.idTokenClaims.preferred_username}</p>
+            <p><strong>AccessToken: </strong> {props.idTokenClaims.preferred_username}</p>
         </div>
     );
 }
