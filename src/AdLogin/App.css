@@ -1,0 +1,49 @@
+.hero-body img {
+  width: 80px;
+  vertical-align: middle;
+  padding-right: 1rem;
+}
+
+.hero-body {
+  padding: 0.5rem;
+}
+
+.hero {
+  margin-bottom: 1rem;
+}
+
+.graphphoto {
+  border-radius: 15px;
+}
+
+.main {
+  padding: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  flex-basis: 0;
+  flex-grow: 1;
+}
+
+.underline {
+  border-bottom: 3px solid #bbb;
+}
+
+.fullwidth {
+  flex: 0 0 100%;
+}
+
+.centered {
+  text-align: center;
+}
+
+.gitlink, .gitlink a:visited {
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  color: #333436;
+}

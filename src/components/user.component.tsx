@@ -105,7 +105,7 @@ export default class User extends Component<Props, State> {
           setTimeout(() => {
             this.setState({
               message: null,
-            }, () => this.props.history.push("/history"));
+            }, () => this.props.history.push("/users"));
           }, 1000);
         })
         .catch((e: Error) => {

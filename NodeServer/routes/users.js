@@ -1,4 +1,4 @@
-
+const jwt = require("jsonwebtoken");
 const userRoutes = (app, fs) => {
 
     // variables
@@ -66,19 +66,11 @@ const userRoutes = (app, fs) => {
         },
             true);
     });
-
-
     // UPDATE
     app.put('/users/:id', (req, res) => {
-        //const userId = req.params["id"];
-        /*  res.setHeader('Access-Control-Allow-Origin', '*');
-         res.setHeader('Access-Control-Allow-Methods', 'PUT');
-         res.status(200).send(`users id:${userId} updated`); */
         readFile(data => {
             // add the new user
             const userId = req.params["id"];
-            //data[userId] = req.body;
-            //console.log(data)
             const records = data.map((items) => {
                 if (items.id == userId) {
                     return req.body
@@ -106,6 +98,60 @@ const userRoutes = (app, fs) => {
             });
         },
             true);
+    });
+
+    //login
+    app.post('/login', (req, res) => {
+        const privateKey = 'A7ImxyeSug3U2QpzqzPSIOysakgzYxerkY7yrHjWhVn59OhD2XeLOzz45pud8uVcfFJKZPOikyAkvKjICwFwi/zXeYKsVODf90UiP00WhwkXB0LFez3MVH+hRz161mXx9uU31gGW0A+pvx/5j0lUzWkqapdivpTsg7CIefNSvnjBhyWCoc9DxT+gy/24Jruf8bovsWXBjq19XYB2v9TuSHw1hdE25zAxEQQQGK19jChF3vUADbxOAXjM9PsDaDvsW5TYlizwz/PbcDcOkDgJzZXgZOpFRcZGP1oCSXxSA1NWeGqa3ZDQW5YTWYms3qczbENCHpejkdQd7aW8Swj/Sg==';
+        try {
+            // Get user input
+            const { email, password } = req.body;
+            // Validate user input
+            if (!(email && password)) {
+                res.status(200).send({
+                    status: 'Fail',
+                    message: "Login can not blank!"
+                }
+                );
+                return;
+            }
+            // Validate if user exist in our database
+            fs.readFile(dataPath, 'utf8', (err, data) => {
+                if (err) {
+                    throw err;
+                }
+                const records = JSON.parse(data);
+                console.log(records);
+                userValidate = records.find(item => item.email == email && item.password == password)
+                if (userValidate) {
+                    const token = jwt.sign(
+                        { user_id: userValidate.id, email },
+                        privateKey,
+                        {
+                            expiresIn: "10h",
+                        }
+                    );
+                    // save user token
+                    userValidate.token = token;
+                    console.log(userValidate);
+                    res.status(200).json({
+                        status: 'success',
+                        data: userValidate
+                    });
+                } else {
+                    res.status(200).send({
+                        status: 'Fail',
+                        message: "Invalid Credentials..Server Error"
+                    });
+                }
+            });
+        } catch (err) {
+            res.status(200).send({
+                status: 'Fail',
+                message: "..Server Error"
+            });
+
+        }
     });
 };
 

@@ -1,11 +1,13 @@
 import http from "../http-common";
-import IUser from "../types/user.type"
+import IUser, { Ilogin } from "../types/user.type"
 
 class UserDataService {
   getAll() {
     return http.get<Array<IUser>>("/users");
   }
-
+  login(credentials: Ilogin) {
+    return http.post<Ilogin>(`/login/`, credentials);
+  }
   get(id: string) {
     return http.get<IUser>(`/users/${id}`);
   }
@@ -15,20 +17,12 @@ class UserDataService {
   }
 
   update(data: IUser, id: any) {
-    console.log('udate-----')
+    // console.log('udate-----')
     return http.put<any>(`/users/${id}`, data);
   }
 
   delete(id: any) {
     return http.delete<any>(`/users/${id}`);
-  }
-
-  deleteAll() {
-    return http.delete<any>(`/users`);
-  }
-
-  findByTitle(title: string) {
-    return http.get<Array<IUser>>(`/users?title=${title}`);
   }
 }
 

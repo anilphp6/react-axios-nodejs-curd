@@ -4,7 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import User from "./components/user.component";
 import Login from "./components/login.component";
+import AADlogin from "./components//loginAAD.component";
 import UsersList from "./components/users-list.component";
+import ADAzureApp from "./AdLogin/App.js";
 
 class App extends Component {
   render() {
@@ -21,7 +23,13 @@ class App extends Component {
             Add User
           </Link>
           <Link to={"/login"} className="navbar-brand">
-            Login
+            Login JWT Token
+          </Link>
+          <Link to={"/adlogin-1"} className="navbar-brand">
+            Login AD(Azure1)
+          </Link>
+          <Link to={"/adlogin"} className="navbar-brand">
+            Login AD(Azure2)
           </Link>
         </nav>
 
@@ -48,6 +56,8 @@ class App extends Component {
             {/*  <Route path="/login" component={() => <>Coming...</>} /> */}
             <Route path="/login" component={Login} />
             <Route path="/addUser" component={User} />
+            <Route path="/adlogin-1" component={AADlogin} />
+            <Route path="/adlogin" component={ADAzureApp} />
           </Switch>
         </div>
       </div>

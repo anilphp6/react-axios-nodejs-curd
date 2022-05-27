@@ -10,7 +10,9 @@ interface RouterProps {
 type Props = RouteComponentProps<RouterProps>;
 type State = {
   message: string | null;
+  isAuthenticated: boolean;
   login: Ilogin
+  userData?: any
 };
 
 export default class Login extends Component<Props, State> {
@@ -21,6 +23,7 @@ export default class Login extends Component<Props, State> {
         email: '',
         password: ''
       },
+      isAuthenticated: false,
       message: null,
     };
   }
@@ -31,10 +34,10 @@ export default class Login extends Component<Props, State> {
     records.login[name1] = e.target.value;
     this.setState({ ...records });
   };
-  login = (): boolean => {
+  login = () => {
     if (this.state.login.email.trim() === '' || this.state.login.password.trim() === '') {
       this.setState({
-        message: 'Login Fail.'
+        message: 'Email and password required!'
       }, () => {
         setTimeout(() => {
           this.setState({
@@ -42,9 +45,25 @@ export default class Login extends Component<Props, State> {
           })
         }, 1000);
       })
-      return false
     }
-    return true
+    UserDataService.login(this.state.login).then((res: any) => {
+      if (res.data.status == 'Fail') {
+        this.setState({
+          message: res.data.message
+        })
+      }
+      if (res.data.status == 'success') {
+        this.setState({
+          message: null,
+          isAuthenticated: true,
+          userData: res.data.data
+        })
+      }
+    }).catch((e: Error) => {
+      this.setState({
+        message: e.message
+      })
+    });
   }
   render() {
     return (
@@ -55,7 +74,7 @@ export default class Login extends Component<Props, State> {
           </span>
         )}
         <div className="edit-form">
-          <h4>User Login</h4>
+          <h4>User Login JWT token</h4>
           <form>
             <div className="form-group">
               <label htmlFor="title">Email</label>
@@ -83,7 +102,11 @@ export default class Login extends Component<Props, State> {
               Submit
             </button>
           </form>
+
         </div>
+        {
+          this.state.isAuthenticated && <pre>{JSON.stringify(this.state.userData)}</pre>
+        }
       </div>
     );
   }
