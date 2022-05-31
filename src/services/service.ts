@@ -2,7 +2,7 @@ import http from "../http-common";
 import IUser, { Ilogin } from "../types/user.type"
 
 class UserDataService {
-  getAll() {
+  getAll(): Promise<any> {
     return http.get<Array<IUser>>("/users");
   }
   login(credentials: Ilogin) {

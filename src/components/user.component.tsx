@@ -1,24 +1,28 @@
 import { Component, ChangeEvent } from "react";
 import { RouteComponentProps } from "react-router-dom";
-
+import IUser, { IUserProps } from "../types/user.type";
 import UserDataService from "../services/service";
-import IUser from "../types/user.type";
-
+import { Dispatch, bindActionCreators } from 'redux'
+import { connect } from 'react-redux';
+import * as UserAction from '../Action/userCalls'
+import * as actionType from '../ActionType/user'
 interface RouterProps {
   id: string;
 }
-type Props = RouteComponentProps<RouterProps>;
+type Props = IUserProps & RouteComponentProps<RouterProps>;
+
+interface userDispatch {
+  deleteUser: () => {}
+}
 
 type State = {
   currentUser: IUser;
   message: string | null;
 };
 
-export default class User extends Component<Props, State> {
+class User extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.onChangeTitle = this.onChangeTitle.bind(this);
-    this.onChangeDescription = this.onChangeDescription.bind(this);
     this.state = {
       currentUser: {
         name: "",
@@ -38,79 +42,27 @@ export default class User extends Component<Props, State> {
     }
   }
 
-  onChangeTitle(e: ChangeEvent<HTMLInputElement>) {
-    const title = e.target.value;
-  }
-
-  onChangeDescription(e: ChangeEvent<HTMLInputElement>) {
-    const description = e.target.value;
-  }
-
   getUser(id: string) {
-    UserDataService.get(id)
-      .then((response: any) => {
-        this.setState({
-          currentUser: response.data[0],
-        });
-        console.log(response.data);
-      })
-      .catch((e: Error) => {
-        console.log(e);
-      });
+    const { users, loading } = this.props.userState
+    const currentUser: IUser | undefined = users.find((i: IUser) => i.id == id)
+    currentUser && this.setState({ currentUser: currentUser })
   }
 
   deleteUser = () => {
-    UserDataService.delete(this.state.currentUser.id)
-      .then((response: any) => {
-        console.log("response--->", response.data);
-        this.setState({
-          message: "Deleted successfully!",
-        });
-        setTimeout(() => {
-          this.setState({
-            message: null,
-          }, () => this.props.history.push("/users"));
-        }, 1000);
-      })
-      .catch((e: Error) => {
-        console.log(e);
-      });
+    this.props.dispatch.deleteUser(this.state.currentUser.id);
   }
   updatSaveUser = () => {
     //update
     if (this.state.currentUser.id) {
-      UserDataService.update(this.state.currentUser, this.state.currentUser.id)
-        .then((response: any) => {
-          console.log("response--->", response.data);
-          this.setState({
-            message: "The User was updated successfully!",
-          });
-          setTimeout(() => {
-            this.setState({
-              message: null,
-            });
-          }, 1000);
-        })
-        .catch((e: Error) => {
-          console.log("Error--->", e);
-        });
+      this.props.dispatch.updateUser(this.state.currentUser);
+      this.setState({
+        message: "Update successfully!",
+      });
     } else {
-      //Save
-      UserDataService.create(this.state.currentUser)
-        .then((response: any) => {
-          console.log("response--->", response.data);
-          this.setState({
-            message: "The User was save successfully!",
-          });
-          setTimeout(() => {
-            this.setState({
-              message: null,
-            }, () => this.props.history.push("/users"));
-          }, 1000);
-        })
-        .catch((e: Error) => {
-          console.log("Error--->", e);
-        });
+      this.props.dispatch.addUser(this.state.currentUser);
+      this.setState({
+        message: "save successfully!",
+      });
     }
   }
   updateChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -200,3 +152,17 @@ export default class User extends Component<Props, State> {
     );
   }
 }
+
+function mapStateToProps(redux: any) {
+  return { userState: redux.usersState }
+}
+function mapDispatchToProps(dispatch: Dispatch<any>) {
+  return {
+    dispatch: bindActionCreators(UserAction, dispatch),
+  }
+}
+
+export default connect<any, any>(
+  mapStateToProps,
+  mapDispatchToProps
+)(User)

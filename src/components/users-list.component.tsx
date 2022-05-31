@@ -1,9 +1,13 @@
 import { Component, ChangeEvent } from "react";
 import UserDataService from "../services/service";
 import { Link } from "react-router-dom";
-import IUser from "../types/user.type";
+import IUser, { IUserProps } from "../types/user.type";
+import { connect } from 'react-redux';
+import { Dispatch, bindActionCreators } from 'redux'
 
-type Props = {};
+import * as UserAction from '../Action/userCalls'
+import * as actionType from '../ActionType/user'
+
 
 type State = {
   users: Array<IUser>;
@@ -11,8 +15,8 @@ type State = {
   currentIndex: number | null;
 };
 
-export default class UsersList extends Component<Props, State> {
-  constructor(props: Props) {
+class UsersList extends Component<IUserProps, State> {
+  constructor(props: IUserProps) {
     super(props);
     this.retrieveUsers = this.retrieveUsers.bind(this);
     this.state = {
@@ -26,17 +30,8 @@ export default class UsersList extends Component<Props, State> {
     this.retrieveUsers();
   }
 
-  retrieveUsers() {
-    UserDataService.getAll()
-      .then((response: any) => {
-        this.setState({
-          users: response.data,
-        });
-        console.log(response);
-      })
-      .catch((e: Error) => {
-        console.log(e);
-      });
+  retrieveUsers = async () => {
+    await this.props.dispatch.getUsers();
   }
 
   setActiveUser(userDetails: IUser, index: number) {
@@ -47,7 +42,8 @@ export default class UsersList extends Component<Props, State> {
   }
 
   render() {
-    const { users, currentUsers } = this.state;
+    const { currentUsers } = this.state;
+    const { users, error } = this.props.userState
     return (
       <div className="list row">
         <div className="col-md-8">
@@ -68,7 +64,7 @@ export default class UsersList extends Component<Props, State> {
           <h4>Users List</h4>
 
           <ul className="list-group">
-            {users &&
+            {users !== undefined && users.length > 0 &&
               users.map((users: IUser, index: number) => (
                 <li
                   className={"list-group-item text-justify text-capitalize row"}
@@ -80,7 +76,7 @@ export default class UsersList extends Component<Props, State> {
                 </li>
               ))}
             {
-              users.length === 0 && (<li className={"list-group-item text-justify text-capitalize row"}>No Records.</li>)
+              users && users.length === 0 && (<li className={"list-group-item text-justify text-capitalize row"}>No Records.</li>)
             }
           </ul>
         </div>
@@ -120,3 +116,18 @@ export default class UsersList extends Component<Props, State> {
     );
   }
 }
+
+function mapDispatchToProps(dispatch: Dispatch<any>) {
+  return {
+    dispatch: bindActionCreators(UserAction, dispatch),
+  }
+}
+
+function mapStateToProps(redux: any) {
+  return { userState: redux.usersState }
+}
+
+export default connect<any, any>(
+  mapStateToProps,
+  mapDispatchToProps
+)(UsersList)

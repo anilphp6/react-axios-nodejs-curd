@@ -10,3 +10,12 @@ export interface Ilogin {
   email: string
   password: string
 }
+
+export interface IUserProps {
+  userState: {
+    error: any
+    loading: boolean
+    users: IUser[]
+  },
+  dispatch: any,
+}
