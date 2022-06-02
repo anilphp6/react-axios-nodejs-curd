@@ -1,0 +1,29 @@
+{
+  "testRegex": "(/src/tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  "setupFilesAfterEnv": [
+    "./src/jest.setup.js"
+  ],
+  "coverageDirectory": "./coverage/jest/",
+  "coverageReporters": [
+    "lcov",
+    "text",
+    "html"
+  ],
+  "collectCoverage": true,
+  "transform": {
+    "^.+\\.(js|jsx|ts|tsx)$": "ts-jest"
+  },
+  "collectCoverageFrom": [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!**/node_modules/**",
+    "!**/vendor/**"
+  ],
+  "coverageThreshold": {
+    "global": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100,
+      "statements": 100
+    }
+  }
+}
