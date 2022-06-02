@@ -1916,7 +1916,7 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/cheerio@*":
+"@types/cheerio@*", "@types/cheerio@^0.22.22":
   "integrity" "sha512-Kt7Cdjjdi2XWSfrZ53v4Of0wG3ZcmaegFXjMmz9tfNrZSkzzo36G0AL1YqSdcIA78Etjt6E609pt5h1xnQkPUw=="
   "resolved" "https://registry.npmjs.org/@types/cheerio/-/cheerio-0.22.31.tgz"
   "version" "0.22.31"
@@ -4903,7 +4903,16 @@
     "has" "^1.0.3"
     "object-is" "^1.1.2"
 
-"enzyme@^3.0.0", "enzyme@^3.11.0":
+"enzyme-to-json@^3.6.2":
+  "integrity" "sha512-Ynm6Z6R6iwQ0g2g1YToz6DWhxVnt8Dy1ijR2zynRKxTyBGA8rCDXU3rs2Qc4OKvUvc2Qoe1bcFK6bnPs20TrTg=="
+  "resolved" "https://registry.npmjs.org/enzyme-to-json/-/enzyme-to-json-3.6.2.tgz"
+  "version" "3.6.2"
+  dependencies:
+    "@types/cheerio" "^0.22.22"
+    "lodash" "^4.17.21"
+    "react-is" "^16.12.0"
+
+"enzyme@^3.0.0", "enzyme@^3.11.0", "enzyme@^3.4.0":
   "integrity" "sha512-Dw8/Gs4vRjxY6/6i9wU0V+utmQO9kvh9XLnz3LIudviOnVYDEe2ec+0k+NQoMamn1VrjKgCUOWj5jG/5M5M0Qw=="
   "resolved" "https://registry.npmjs.org/enzyme/-/enzyme-3.11.0.tgz"
   "version" "3.11.0"
@@ -9917,6 +9926,11 @@
   "integrity" "sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew=="
   "resolved" "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.9.tgz"
   "version" "6.0.9"
+
+"react-is@^16.12.0":
+  "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
+  "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
+  "version" "16.13.1"
 
 "react-is@^16.13.1", "react-is@^16.8.6":
   "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="

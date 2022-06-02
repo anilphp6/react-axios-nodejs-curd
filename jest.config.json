@@ -13,6 +13,9 @@
   "transform": {
     "^.+\\.(js|jsx|ts|tsx)$": "ts-jest"
   },
+  "snapshotSerializers": [
+    "enzyme-to-json/serializer"
+  ],
   "collectCoverageFrom": [
     "src/**/*.{js,jsx,ts,tsx}",
     "!**/node_modules/**",
